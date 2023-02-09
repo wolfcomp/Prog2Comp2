@@ -21,7 +21,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -30,12 +30,23 @@ public:
 
 	void Move(const FInputActionValue& Value);
 
+	void Shoot(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	float Speed = 20.0f;
+
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
-	class UInputMappingContext* InputMappingContext;
+		class UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
-	class UInputAction* MoveAction;
+		class UInputAction* ShootAction;
+
+	UPROPERTY(EditAnywhere)
+		class USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditAnywhere)
+		class UCameraComponent* Camera;
 };

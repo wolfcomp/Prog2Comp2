@@ -40,16 +40,16 @@ public:
 		float Time = 0.0f;
 
 	UPROPERTY(EditAnywhere)
-		float LifeTime = 10.0f;
+		float LifeTime = 5.0f;
 
 	UPROPERTY(EditAnywhere)
 		float LightFadeTime = 1.0f;
 
 	UPROPERTY(EditAnywhere)
 		float ExplosionDuration = 2.0f;
-
+	
 	UPROPERTY(EditAnywhere)
-		float Speed = 1.0f;
+		float Speed = 20.0f;
 
 	UPROPERTY(EditAnywhere)
 		float FadeDuration = 1.0f;

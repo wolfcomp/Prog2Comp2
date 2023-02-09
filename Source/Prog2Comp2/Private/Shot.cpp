@@ -51,12 +51,6 @@ AShot::AShot()
 	CollisionComponent->SetRelativeScale3D(FVector(0.5f, 0.5f, 2.25f));
 	CollisionComponent->SetRelativeLocation(FVector(100.0f, 0.0f, 0.0f));
 	CollisionComponent->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
-	CollisionComponent->SetCollisionProfileName(TEXT("Custom"));
-	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CollisionComponent->SetCollisionObjectType(ECC_Pawn);
-	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-	CollisionComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
-	CollisionComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 #pragma endregion
 
 	Light1 = CreateDefaultSubobject<USpotLightComponent>(TEXT("ShotLight"));
@@ -73,6 +67,12 @@ void AShot::BeginPlay()
 	Super::BeginPlay();
 	ShotEffectComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ShotEffect, GetActorLocation(), GetActorRotation());
 	ShotEffectComponent->AttachToComponent(Light2, FAttachmentTransformRules::KeepRelativeTransform);
+	CollisionComponent->SetCollisionProfileName(TEXT("Custom"));
+	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CollisionComponent->SetCollisionObjectType(ECC_Pawn);
+	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CollisionComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	CollisionComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AShot::OnOverlapBegin);
 }
 

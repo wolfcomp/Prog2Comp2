@@ -4,6 +4,9 @@
 #include "PlayerPawn.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Shot.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -15,6 +18,23 @@ APlayerPawn::APlayerPawn()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
 	SetRootComponent(Mesh);
 	Mesh->SetStaticMesh(MeshFinder.Object);
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(Mesh);
+	SpringArm->bDoCollisionTest = false;
+	SpringArm->TargetArmLength = 500.f;
+	SpringArm->SetRelativeRotation(FRotator(-45, 180, 0));
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->bUsePawnControlRotation = false; 
+	Camera->SetupAttachment(SpringArm);
+
+	const ConstructorHelpers::FObjectFinder<UInputAction> MoveActionFinder(TEXT("InputAction'/Game/Input/Move.Move'"));
+	MoveAction = MoveActionFinder.Object;
+
+	const ConstructorHelpers::FObjectFinder<UInputAction> ShootActionFinder(TEXT("InputAction'/Game/Input/Shoot.Shoot'"));
+	ShootAction = ShootActionFinder.Object;
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
@@ -22,12 +42,6 @@ APlayerPawn::APlayerPawn()
 void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	if (APlayerController* pc = Cast<APlayerController>(Controller)) {
-		if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pc->GetLocalPlayer())) {
-			subsystem->AddMappingContext(InputMappingContext, 0);
-
-		}
-	}
 }
 
 // Called every frame
@@ -44,12 +58,23 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	if(UEnhancedInputComponent* inputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		inputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerPawn::Move);
+		inputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &APlayerPawn::Shoot);
 	}
 }
 
 void APlayerPawn::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
-	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, FString::Printf(TEXT("Move: %f, %f"), MovementVector.X, MovementVector.Y));
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Move: %f, %f"), MovementVector.X * Speed, MovementVector.Y * Speed));
+
+	AddActorWorldOffset(FVector(-MovementVector.Y * Speed, -MovementVector.X * Speed, 0.f));
+}
+
+void APlayerPawn::Shoot(const FInputActionValue& Value)
+{
+	const FVector Location = GetActorLocation();
+	const FRotator Rotation = GetActorRotation();
+	GetWorld()->SpawnActor(AShot::StaticClass(), &Location, &Rotation, FActorSpawnParameters());
 }
 
