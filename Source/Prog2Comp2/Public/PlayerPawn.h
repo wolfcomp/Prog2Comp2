@@ -49,10 +49,13 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		class UCameraComponent* Camera;
-	UPROPERTY(EditAnywhere)
-		int Ammo;
-	UPROPERTY(EditAnywhere)
-		int Health;
-	UPROPERTY(EditAnywhere)
-		int Score;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Ammo = 10;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float CurrentHealth = 50.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MaxHealth = 100.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Score = 0;
 };

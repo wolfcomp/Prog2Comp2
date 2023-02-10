@@ -4,24 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "PlayerPawn.h"
 #include "PlayerHud.generated.h"
 
 /**
  * 
  */
 
-class APlayerPawn;
-
 UCLASS()
 class PROG2COMP2_API UPlayerHud : public UUserWidget
 {
 	GENERATED_BODY()
-protected:
-	virtual void NativeConstruct() override;
 public:
+	virtual void NativeConstruct() override;
+	UFUNCTION()
+	FText SetAmmoField() const;
+	UFUNCTION()
+	FText SetScoreField() const;
+	UFUNCTION()
+	float SetHealthBar() const;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Essentials", meta = (ExposeOnSpawn = true))
 		APlayerPawn* MyPlayer;
-public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		class UProgressBar* HealthBar;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
