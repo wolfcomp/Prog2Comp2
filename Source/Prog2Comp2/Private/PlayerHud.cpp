@@ -3,10 +3,13 @@
 
 #include "PlayerHud.h"
 
+#include "Components/TextBlock.h"
+
 void UPlayerHud::NativeConstruct()
 {
 	if(MyPlayer)
 	{
+		//AmmoNum->AddBinding();
 		//MyPlayer->Ammo;
 		//MyPlayer->Health;
 		//MyPlayer->Score;

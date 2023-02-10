@@ -49,4 +49,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		class UCameraComponent* Camera;
+	UPROPERTY(EditAnywhere)
+		int Ammo;
+	UPROPERTY(EditAnywhere)
+		int Health;
+	UPROPERTY(EditAnywhere)
+		int Score;
 };
