@@ -18,6 +18,12 @@ APlayerPawn::APlayerPawn()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
 	SetRootComponent(Mesh);
 	Mesh->SetStaticMesh(MeshFinder.Object);
+	Mesh->SetCollisionProfileName(TEXT("Custom"));
+	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Mesh->SetCollisionObjectType(ECC_Pawn);
+	Mesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	Mesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	Mesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(Mesh);
@@ -34,6 +40,9 @@ APlayerPawn::APlayerPawn()
 
 	const ConstructorHelpers::FObjectFinder<UInputAction> ShootActionFinder(TEXT("InputAction'/Game/Input/Shoot.Shoot'"));
 	ShootAction = ShootActionFinder.Object;
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ShotFinder(TEXT("Blueprint'/Game/Blueprints/BP_Shot.BP_Shot'"));
+	ShotClass = ShotFinder.Object->GeneratedClass;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
@@ -75,6 +84,6 @@ void APlayerPawn::Shoot(const FInputActionValue& Value)
 {
 	const FVector Location = GetActorLocation();
 	const FRotator Rotation = GetActorRotation();
-	GetWorld()->SpawnActor(AShot::StaticClass(), &Location, &Rotation, FActorSpawnParameters());
+	GetWorld()->SpawnActor(ShotClass, &Location, &Rotation, FActorSpawnParameters());
 }
 

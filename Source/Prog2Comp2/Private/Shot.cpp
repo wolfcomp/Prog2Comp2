@@ -9,6 +9,7 @@
 #include "Components/PointLightComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
+#include "UObject/WeakObjectPtr.h"
 
 float AShot::explosionIntensity() const
 {
@@ -41,7 +42,7 @@ AShot::AShot()
 	ExplosionEffect = ExplosionEffectFinder.Object;
 
 	Light2 = CreateDefaultSubobject<UPointLightComponent>(TEXT("ExplosionLight"));
-	Light2->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	SetRootComponent(Light2);
 	Light2->SetLightColor(FLinearColor(0.313989f, 0.64448f, 1.0f, 1.0f));
 	Light2->SetIntensity(0.0f);
 
@@ -68,11 +69,14 @@ void AShot::BeginPlay()
 	ShotEffectComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ShotEffect, GetActorLocation(), GetActorRotation());
 	ShotEffectComponent->AttachToComponent(Light2, FAttachmentTransformRules::KeepRelativeTransform);
 	CollisionComponent->SetCollisionProfileName(TEXT("Custom"));
-	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	CollisionComponent->SetCollisionObjectType(ECC_Pawn);
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CollisionComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	CollisionComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
+	FScriptDelegate CollisionBeginOverlap;
+	CollisionBeginOverlap.BindUFunction(this, "OnOverlapBegin");
+	CollisionComponent->OnComponentBeginOverlap.Add(CollisionBeginOverlap);
 	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AShot::OnOverlapBegin);
 }
 
@@ -110,6 +114,15 @@ void AShot::Tick(float DeltaTime)
 void AShot::OnOverlapBegin(UPrimitiveComponent* overlapped_component, AActor* other_actor,
 	UPrimitiveComponent* other_comp, int32 other_body_index, bool b_from_sweep, const FHitResult& sweep_result)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot hit something"));
+	this->Explode(other_actor);
+}
+
+void AShot::Explode(AActor* other_actor)
+{
+	//print other actor name to screen
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, other_actor->GetName());
+
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotEffectComponent->Deactivate();
 	Light1->SetIntensity(0.0f);
@@ -123,4 +136,3 @@ void AShot::OnOverlapBegin(UPrimitiveComponent* overlapped_component, AActor* ot
 	Time = LifeTime;
 	Light2->SetIntensity(explosionIntensity());
 }
-

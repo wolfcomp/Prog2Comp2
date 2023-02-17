@@ -58,4 +58,7 @@ public:
 		float MaxHealth = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Score = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class AShot> ShotClass;
 };

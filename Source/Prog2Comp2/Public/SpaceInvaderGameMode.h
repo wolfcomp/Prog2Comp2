@@ -14,6 +14,8 @@ class PROG2COMP2_API ASpaceInvaderGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
+	ASpaceInvaderGameMode();
+
 public:
 	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
 

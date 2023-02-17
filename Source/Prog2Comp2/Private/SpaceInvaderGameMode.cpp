@@ -5,6 +5,14 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "PlayerPawn.h"
+#include "InputMappingContext.h"
+
+ASpaceInvaderGameMode::ASpaceInvaderGameMode()
+{
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingContextFinder(TEXT("/Game/Input/SpaceInvadersInputs.SpaceInvadersInputs"));
+	InputMappingContext = InputMappingContextFinder.Object;
+}
+
 
 void ASpaceInvaderGameMode::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
 {

@@ -36,6 +36,9 @@ public:
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* overlapped_component, AActor* other_actor, UPrimitiveComponent* other_comp, int32 other_body_index, bool b_from_sweep, const FHitResult& sweep_result);
 
+	UFUNCTION(BlueprintCallable)
+		void Explode(AActor* other_actor);
+
 	UPROPERTY(VisibleAnywhere)
 		float Time = 0.0f;
 
