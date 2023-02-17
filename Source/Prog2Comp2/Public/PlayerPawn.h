@@ -32,8 +32,10 @@ public:
 
 	void Shoot(const FInputActionValue& Value);
 
+	void Look(const FInputActionValue& Value);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	float Speed = 20.0f;
+		float Speed = 20.0f;
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Mesh;
@@ -42,7 +44,10 @@ public:
 		class UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
-		class UInputAction* ShootAction;
+		UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
+		UInputAction* ShootAction;
 
 	UPROPERTY(EditAnywhere)
 		class USpringArmComponent* SpringArm;
@@ -61,4 +66,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class AShot> ShotClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<FVector> ShotOffsets = { FVector(201.5, 220, 21.5), FVector(-201.5, 220, 119), FVector(201.5, 220, 119), FVector(-201.5, 220, 21.5) };
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ShotIndex = 0;
 };
