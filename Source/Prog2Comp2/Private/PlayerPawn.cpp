@@ -12,7 +12,7 @@
 // Sets default values
 APlayerPawn::APlayerPawn()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/SpaceShip/SpaceShip.SpaceShip'"));
@@ -35,7 +35,7 @@ APlayerPawn::APlayerPawn()
 	SpringArm->SetRelativeRotation(FRotator(-45, 90, 0));
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->bUsePawnControlRotation = false; 
+	Camera->bUsePawnControlRotation = false;
 	Camera->SetupAttachment(SpringArm);
 
 	const ConstructorHelpers::FObjectFinder<UInputAction> MoveActionFinder(TEXT("InputAction'/Game/Input/Move.Move'"));
@@ -72,7 +72,7 @@ void APlayerPawn::Tick(float DeltaTime)
 void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	if(UEnhancedInputComponent* inputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	if (UEnhancedInputComponent* inputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		inputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerPawn::Move);
 		inputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &APlayerPawn::Shoot);
@@ -106,3 +106,14 @@ void APlayerPawn::Shoot(const FInputActionValue& Value)
 	GetWorld()->SpawnActor(ShotClass, &Location, &Rotation, FActorSpawnParameters());
 }
 
+void APlayerPawn::Collide(AActor* other_actor)
+{
+	if (other_actor->Tags.FindByKey("Enemy"))
+		CurrentHealth -= 10;
+
+	if(CurrentHealth <= 0)
+	{
+		this->Destroy();
+		//show game over display
+	}
+}

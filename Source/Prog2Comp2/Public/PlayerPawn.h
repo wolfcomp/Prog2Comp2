@@ -72,4 +72,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ShotIndex = 0;
+
+	UFUNCTION(BlueprintCallable)
+	void Collide(AActor* other_actor);
 };

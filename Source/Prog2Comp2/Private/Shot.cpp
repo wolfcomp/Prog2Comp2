@@ -120,6 +120,8 @@ void AShot::OnOverlapBegin(UPrimitiveComponent* overlapped_component, AActor* ot
 
 void AShot::Explode(AActor* other_actor)
 {
+	if(!other_actor->Tags.FindByKey("Enemy"))
+		return;
 	//print other actor name to screen
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, other_actor->GetName());
 

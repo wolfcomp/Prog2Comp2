@@ -11,6 +11,8 @@ ASpaceInvaderGameMode::ASpaceInvaderGameMode()
 {
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingContextFinder(TEXT("/Game/Input/SpaceInvadersInputs.SpaceInvadersInputs"));
 	InputMappingContext = InputMappingContextFinder.Object;
+	static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("Blueprint'/Game/Blueprints/PlayerPawn.PlayerPawn'"));
+	PlayerPawn = PlayerPawnObject.Object->GeneratedClass;
 }
 
 
@@ -40,6 +42,6 @@ void ASpaceInvaderGameMode::HandleStartingNewPlayer_Implementation(APlayerContro
 	SpawnTransform.SetLocation(FVector(0, 0, 50));
 	const FVector TmpLoc = SpawnTransform.GetLocation();
 	const FRotator TmpRot = SpawnTransform.GetRotation().Rotator();
-	APlayerPawn* NewController = Cast<APlayerPawn>(GetWorld()->SpawnActor(APlayerPawn::StaticClass(), &TmpLoc, &TmpRot, SpawnInfo));
+	APlayerPawn* NewController = Cast<APlayerPawn>(GetWorld()->SpawnActor(PlayerPawn, &TmpLoc, &TmpRot, SpawnInfo));
 	NewPlayer->Possess(NewController);
 }

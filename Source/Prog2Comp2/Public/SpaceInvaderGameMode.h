@@ -21,4 +21,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
 		class UInputMappingContext* InputMappingContext;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+		TSubclassOf<class APlayerPawn> PlayerPawn;
 };
