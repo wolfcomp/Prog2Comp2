@@ -11,14 +11,21 @@ void UPlayerHud::NativeConstruct()
 	if (MyPlayer)
 	{
 		//bind properties
-		AmmoNum->TextDelegate.BindUFunction(this, "SetAmmoField");
-		ScoreNum->TextDelegate.BindUFunction(this, "SetScoreField");
-		HealthBar->PercentDelegate.BindUFunction(this, "SetHealthBar");
-
-		//update them
-		AmmoNum->SynchronizeProperties();
-		ScoreNum->SynchronizeProperties();
-		HealthBar->SynchronizeProperties();
+		if (AmmoNum)
+		{
+			AmmoNum->TextDelegate.BindUFunction(this, "SetAmmoField");
+			AmmoNum->SynchronizeProperties();
+		}
+		if (ScoreNum)
+		{
+			ScoreNum->TextDelegate.BindUFunction(this, "SetScoreField");
+			ScoreNum->SynchronizeProperties();
+		}
+		if(HealthBar)
+		{
+			HealthBar->PercentDelegate.BindUFunction(this, "SetHealthBar");
+			HealthBar->SynchronizeProperties();
+		}
 	} else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "MyPlayer not valid");

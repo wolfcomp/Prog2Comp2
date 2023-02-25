@@ -4,9 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+//#include "Blueprint/UserWidgetBlueprint.h"
+#include "PlayerHud.h"
 #include "PlayerPawn.generated.h"
 
 struct FInputActionValue;
+//class UPlayerHud;
 
 UCLASS()
 class PROG2COMP2_API APlayerPawn : public APawn
@@ -33,6 +36,9 @@ public:
 	void Shoot(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UUserWidget> PlayerHudTemplate = __nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 		float Speed = 20.0f;
@@ -75,4 +81,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Collide(AActor* other_actor);
+private:
+	UPROPERTY() UPlayerHud* PlayerHudWidget = __nullptr;
 };

@@ -4,7 +4,9 @@
 #include "PlayerPawn.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PlayerHud.h"
 #include "Shot.h"
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
@@ -59,13 +61,21 @@ APlayerPawn::APlayerPawn()
 void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
+	if (PlayerHudTemplate)
+	{
+		PlayerHudWidget = CreateWidget<UPlayerHud>(GetWorld(), PlayerHudTemplate, FName("PlayerHud"));
+	}
+	if (PlayerHudWidget)
+	{
+		PlayerHudWidget->MyPlayer = this;
+		PlayerHudWidget->AddToViewport();
+	}
 }
 
 // Called every frame
 void APlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input

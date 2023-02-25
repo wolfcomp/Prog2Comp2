@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "PlayerPawn.h"
 #include "PlayerHud.generated.h"
 
 /**
  * 
  */
+class APlayerPawn;
 
 UCLASS()
 class PROG2COMP2_API UPlayerHud : public UUserWidget
@@ -23,12 +23,12 @@ public:
 	FText SetScoreField() const;
 	UFUNCTION()
 	float SetHealthBar() const;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Essentials", meta = (ExposeOnSpawn = true))
-		APlayerPawn* MyPlayer;
+	UPROPERTY(EditAnywhere)
+		APlayerPawn* MyPlayer = __nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		class UProgressBar* HealthBar;
+		class UProgressBar* HealthBar = __nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		class UTextBlock* AmmoNum;
+		class UTextBlock* AmmoNum = __nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		class UTextBlock* ScoreNum;
+		class UTextBlock* ScoreNum = __nullptr;
 };
