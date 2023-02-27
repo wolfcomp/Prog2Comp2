@@ -43,6 +43,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 		float Speed = 20.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+		float LookSpeed = 5.0f;
+
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Mesh;
 

@@ -94,7 +94,7 @@ void APlayerPawn::Look(const FInputActionValue& Value)
 {
 	const float axisValue = Value.Get<float>();
 	FRotator rotation = GetActorRotation();
-	rotation.Yaw += axisValue;
+	rotation.Yaw += axisValue * LookSpeed;
 	SetActorRotation(rotation);
 }
 
