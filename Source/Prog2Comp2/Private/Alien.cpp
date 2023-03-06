@@ -9,7 +9,7 @@
 // Sets default values
 AAlien::AAlien()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
@@ -32,7 +32,6 @@ void AAlien::BeginPlay()
 	Super::BeginPlay();
 	RotationSpeed = FMath::RandRange(0.5f, 1.5f);
 	MovementSpeed += FMath::RandRange(0, 250);
-	
 }
 
 // Called every frame
@@ -41,13 +40,23 @@ void AAlien::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// Move
-	FVector NewLocation = GetActorLocation();
-	NewLocation += FVector(-1, 0, 0) * MovementSpeed * DeltaTime;
-	SetActorLocation(NewLocation);
+	FVector newLocation = GetActorLocation();
+	if (const APlayerController* pc = GetWorld()->GetFirstPlayerController())
+	{
+		const FVector pcLocation = pc->GetPawn()->GetActorLocation();
+		FVector direction = pcLocation - newLocation;
+		// normalize direction
+		direction.Normalize();
+		newLocation += direction * MovementSpeed * DeltaTime;
+	}
+	else
+	{
+		newLocation += FVector(-1, 0, 0) * MovementSpeed * DeltaTime;
+	}
+	SetActorLocation(newLocation);
 
 	// Rotate
 	SetActorRotation(GetActorRotation() + FRotator(0, RotationSpeed, 0));
-
 }
 
 void AAlien::DestroyTarget()
