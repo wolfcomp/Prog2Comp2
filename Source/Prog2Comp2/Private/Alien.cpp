@@ -4,13 +4,16 @@
 #include "Alien.h"
 #include "Components/BoxComponent.h"
 #include "GameplayTagContainer.h"
+#include "Materials/Material.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AAlien::AAlien()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/SpaceShip/SpaceShip.SpaceShip'"));
+	const ConstructorHelpers::FObjectFinder<UMaterial> MeshMaterialFinder(TEXT("Material'/Game/Models/SpaceShip/MM_SpaceShip.MM_SpaceShip'"));
 
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	SetRootComponent(Collider);
@@ -24,9 +27,10 @@ AAlien::AAlien()
 	MovementSpeed = 350;
 	RotationSpeed = 1.f;
 	XKillPosition = -200.f;
+
+	Tags.Add(FName("Enemy"));
 }
 
-// Called when the game starts or when spawned
 void AAlien::BeginPlay()
 {
 	Super::BeginPlay();
@@ -34,7 +38,6 @@ void AAlien::BeginPlay()
 	MovementSpeed += FMath::RandRange(0, 250);
 }
 
-// Called every frame
 void AAlien::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
