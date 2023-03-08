@@ -44,7 +44,7 @@ void AAlienSpawner::Tick(float DeltaTime)
 		{
 			if(AAlien* Target = GetWorld()->SpawnActor<AAlien>(AAlien::StaticClass(), location, FRotator::ZeroRotator))
 			{
-			    Target->AlienMoveSpeed = AlienSpeed + FMath::RandRange(0, 100);
+			    Target->AlienMoveSpeed = AlienSpeed + FMath::RandRange(-100, 300);
 			}
 			InternalTimer = 0.f;
 		}
