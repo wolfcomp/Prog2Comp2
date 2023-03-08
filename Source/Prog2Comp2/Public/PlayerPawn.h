@@ -28,6 +28,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    class USoundBase* ShootSound;
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -38,15 +41,17 @@ public:
 	void Look(const FInputActionValue& Value);
 	void AddScore();
 
+	void PlayShootSound();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> PlayerHudTemplate = __nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-		float Speed = 20.0f;
+		float Speed = 50.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-		float LookSpeed = 5.0f;
+		float LookSpeed = 4.0f;
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Mesh;
@@ -89,7 +94,8 @@ public:
 		int ShotIndex = 0;
 
 	UFUNCTION(BlueprintCallable)
-	void Collide(AActor* other_actor);
+	    void Collide(AActor* other_actor);
+
 private:
 	UPROPERTY() UPlayerHud* PlayerHudWidget = __nullptr;
 };

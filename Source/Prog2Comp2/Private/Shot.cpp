@@ -10,6 +10,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
 #include "PlayerPawn.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/WeakObjectPtr.h"
 
 float AShot::explosionIntensity() const
@@ -36,6 +37,8 @@ AShot::AShot()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	const ConstructorHelpers::FObjectFinder<USoundWave> SoundWaveFinder(TEXT("SoundWave'/Game/MusicSFX/LaserShot.LaserShot'"));
+
 	const ConstructorHelpers::FObjectFinder<UNiagaraSystem> ShotEffectFinder(TEXT("NiagaraSystem'/Game/Blueprints/ShotEffect.ShotEffect'"));
 	ShotEffect = ShotEffectFinder.Object;
 
@@ -61,6 +64,9 @@ AShot::AShot()
 	Light1->SetLightColor(FLinearColor(0.313989f, 0.64448f, 1.0f, 1.0f));
 	Light1->SetOuterConeAngle(20.0f);
 	Light1->SetIntensity(20000.0f);
+
+	//Constructing sound
+	AlienDeathSound = SoundWaveFinder.Object;
 }
 
 // Called when the game starts or when spawned
@@ -123,7 +129,7 @@ void AShot::Explode(AActor* other_actor)
 	if(!other_actor->Tags.FindByKey("Enemy"))
 		return;
 
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Hit"));
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Hit"));
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotEffectComponent->Deactivate();
 	Light1->SetIntensity(0.0f);
@@ -134,6 +140,8 @@ void AShot::Explode(AActor* other_actor)
 		ExplosionEffectComponent->AttachToComponent(Light2, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 	other_actor->Destroy();
+	UGameplayStatics::PlaySound2D(GetWorld(), AlienDeathSound, 1, 1, 0);
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("YEEEEEE"));
 	if(const APlayerController* pc = GetWorld()->GetFirstPlayerController())
 	{
 		if (APlayerPawn* player = Cast<APlayerPawn>(pc->GetPawn()))

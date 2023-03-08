@@ -24,6 +24,9 @@ class PROG2COMP2_API AShot : public AActor
 public:
 	// Sets default values for this actor's properties
 	AShot();
+	
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		USoundWave* AlienDeathSound;
 
 protected:
 	// Called when the game starts or when spawned
@@ -52,7 +55,7 @@ public:
 		float ExplosionDuration = 2.0f;
 	
 	UPROPERTY(EditAnywhere)
-		float Speed = 40.0f;
+		float Speed = 80.0f;
 
 	UPROPERTY(EditAnywhere)
 		float FadeDuration = 1.0f;

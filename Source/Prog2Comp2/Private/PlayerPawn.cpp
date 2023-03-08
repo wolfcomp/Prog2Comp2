@@ -10,6 +10,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -33,8 +34,8 @@ APlayerPawn::APlayerPawn()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(Mesh);
 	SpringArm->bDoCollisionTest = false;
-	SpringArm->TargetArmLength = 1500.f;
-	SpringArm->SetRelativeRotation(FRotator(-45, 90, 0));
+	SpringArm->TargetArmLength = 2000.f;
+	SpringArm->SetRelativeRotation(FRotator(-30, 90, 0));
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->bUsePawnControlRotation = false;
@@ -126,6 +127,8 @@ void APlayerPawn::Shoot(const FInputActionValue& Value)
 	location = location + rotation.RotateVector(offset);
 	rotation = rotation + FRotator(0, -90, 0);
 	GetWorld()->SpawnActor(ShotClass, &location, &rotation, FActorSpawnParameters());
+	PlayShootSound();
+
 }
 
 void APlayerPawn::Collide(AActor* other_actor)
@@ -142,5 +145,9 @@ void APlayerPawn::Collide(AActor* other_actor)
 
 void APlayerPawn::AddScore()
 {
-	Score++;
+	Score++; }
+
+void APlayerPawn::PlayShootSound()
+{
+    UGameplayStatics::PlaySound2D(GetWorld(), ShootSound, 1, 0, 0);
 }

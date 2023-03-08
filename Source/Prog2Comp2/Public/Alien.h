@@ -34,12 +34,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* StaticMesh;
 
-	/** Public Functions */
-
-	UFUNCTION()
-		void DestroyTarget();
-
-
 	/** Public Variables */
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
@@ -50,5 +44,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
 		float XKillPosition;
+
 
 };

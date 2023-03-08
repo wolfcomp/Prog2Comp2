@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "Materials/Material.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAlien::AAlien()
@@ -74,11 +75,3 @@ void AAlien::Tick(float DeltaTime)
 	// Rotate
 	SetActorRotation(GetActorRotation() + FRotator(0, RotationSpeed, 0));
 }
-
-void AAlien::DestroyTarget()
-{
-	SetActorHiddenInGame(true);
-	SetActorEnableCollision(false);
-	this->Destroy();
-}
-
