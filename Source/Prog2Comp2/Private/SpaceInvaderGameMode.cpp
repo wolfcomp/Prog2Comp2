@@ -9,39 +9,39 @@
 
 ASpaceInvaderGameMode::ASpaceInvaderGameMode()
 {
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingContextFinder(TEXT("/Game/Input/SpaceInvadersInputs.SpaceInvadersInputs"));
-	InputMappingContext = InputMappingContextFinder.Object;
-	static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("Blueprint'/Game/Blueprints/PlayerPawn.PlayerPawn'"));
-	PlayerPawn = PlayerPawnObject.Object->GeneratedClass;
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> inputMappingContextFinder(TEXT("/Game/Input/SpaceInvadersInputs.SpaceInvadersInputs"));
+	InputMappingContext = inputMappingContextFinder.Object;
+	static ConstructorHelpers::FObjectFinder<UBlueprint> playerPawnObject(TEXT("Blueprint'/Game/Blueprints/PlayerPawn.PlayerPawn'"));
+	PlayerPawn = playerPawnObject.Object->GeneratedClass;
 }
 
 
-void ASpaceInvaderGameMode::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
+void ASpaceInvaderGameMode::HandleStartingNewPlayer_Implementation(APlayerController* newPlayer)
 {
-	Super::HandleStartingNewPlayer_Implementation(NewPlayer);
+	Super::HandleStartingNewPlayer_Implementation(newPlayer);
 
 	/*if (!NewPlayer->GetPawn())
 	{
 		return;
 	}*/
 
-	if (APawn* TmpPawn = NewPlayer->GetPawn())
+	if (APawn* tmpPawn = newPlayer->GetPawn())
 	{
-		TmpPawn->Destroy();
+		tmpPawn->Destroy();
 	}
 
-	if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(NewPlayer->GetLocalPlayer())) {
+	if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(newPlayer->GetLocalPlayer())) {
 		subsystem->AddMappingContext(InputMappingContext, 0);
 	}
 
-	FActorSpawnParameters SpawnInfo;
-	SpawnInfo.Owner = NewPlayer;
-	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	FActorSpawnParameters spawnInfo;
+	spawnInfo.Owner = newPlayer;
+	spawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	FTransform SpawnTransform = FTransform();
-	SpawnTransform.SetLocation(FVector(0, 0, 50));
-	const FVector TmpLoc = SpawnTransform.GetLocation();
-	const FRotator TmpRot = SpawnTransform.GetRotation().Rotator();
-	APlayerPawn* NewController = Cast<APlayerPawn>(GetWorld()->SpawnActor(PlayerPawn, &TmpLoc, &TmpRot, SpawnInfo));
-	NewPlayer->Possess(NewController);
+	FTransform spawnTransform = FTransform();
+	spawnTransform.SetLocation(FVector(0, 0, 50));
+	const FVector tmpLoc = spawnTransform.GetLocation();
+	const FRotator tmpRot = spawnTransform.GetRotation().Rotator();
+	APlayerPawn* newController = Cast<APlayerPawn>(GetWorld()->SpawnActor(PlayerPawn, &tmpLoc, &tmpRot, spawnInfo));
+	newPlayer->Possess(newController);
 }

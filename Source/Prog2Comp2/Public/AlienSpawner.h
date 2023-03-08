@@ -18,7 +18,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float delta_time) override;
 	AAlienSpawner();
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")

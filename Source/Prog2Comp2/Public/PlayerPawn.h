@@ -26,21 +26,21 @@ protected:
 
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float delta_time) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
     class USoundBase* ShootSound;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* player_input_component) override;
 
-	void Move(const FInputActionValue& Value);
+	void Move(const FInputActionValue& value);
 
-	void Shoot(const FInputActionValue& Value);
+	void Shoot(const FInputActionValue& value);
 
-	void Look(const FInputActionValue& Value);
+	void Look(const FInputActionValue& value);
 
-	void Restart(const FInputActionValue& Value);
+	void Restart(const FInputActionValue& value);
 	void AddScore();
 
 	void PlayShootSound();

@@ -19,7 +19,7 @@ class PROG2COMP2_API AShot : public AActor
 
 	bool exploded;
 
-	float explosionIntensity() const;
+	float ExplosionIntensity() const;
 	
 public:
 	// Sets default values for this actor's properties
@@ -34,7 +34,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float delta_time) override;
 	
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* overlapped_component, AActor* other_actor, UPrimitiveComponent* other_comp, int32 other_body_index, bool b_from_sweep, const FHitResult& sweep_result);

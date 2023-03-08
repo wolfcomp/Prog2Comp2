@@ -23,7 +23,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float delta_time) override;
 	/** Components */
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

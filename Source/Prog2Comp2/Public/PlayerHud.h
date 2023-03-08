@@ -27,7 +27,7 @@ public:
 	UFUNCTION()
 	FText LocSetWinLoseField() const;
 	UFUNCTION()
-	void SetWinLoseField(FText text, ESlateVisibility displayWinImage, ESlateVisibility displayText);
+	void SetWinLoseField(FText text, ESlateVisibility display_win_image, ESlateVisibility display_text);
 	UPROPERTY(EditAnywhere)
 		APlayerPawn* MyPlayer = __nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

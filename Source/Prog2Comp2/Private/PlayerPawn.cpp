@@ -89,7 +89,7 @@ void APlayerPawn::BeginPlay()
 }
 
 // Called every frame
-void APlayerPawn::Tick(float DeltaTime)
+void APlayerPawn::Tick(float delta_time)
 {
     const bool isWon = Cast<AAlienSpawner>(UGameplayStatics::GetActorOfClass(GetWorld(), AAlienSpawner::StaticClass()))->GameWon;
     
@@ -109,16 +109,16 @@ void APlayerPawn::Tick(float DeltaTime)
     }
     else
     {
-        ReloadTimer += DeltaTime;
+        ReloadTimer += delta_time;
     }
-    Super::Tick(DeltaTime);
+    Super::Tick(delta_time);
 }
 
 // Called to bind functionality to input
-void APlayerPawn::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
+void APlayerPawn::SetupPlayerInputComponent(UInputComponent *player_input_component)
 {
-    Super::SetupPlayerInputComponent(PlayerInputComponent);
-    if (UEnhancedInputComponent *inputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+    Super::SetupPlayerInputComponent(player_input_component);
+    if (UEnhancedInputComponent *inputComponent = Cast<UEnhancedInputComponent>(player_input_component))
     {
         inputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerPawn::Move);
         inputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &APlayerPawn::Shoot);
@@ -127,15 +127,15 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent *PlayerInputComponen
     }
 }
 
-void APlayerPawn::Look(const FInputActionValue &Value)
+void APlayerPawn::Look(const FInputActionValue &value)
 {
-    const float axisValue = Value.Get<float>();
+    const float axisValue = value.Get<float>();
     FRotator rotation = GetActorRotation();
     rotation.Yaw += axisValue * LookSpeed;
     SetActorRotation(rotation);
 }
 
-void APlayerPawn::Restart(const FInputActionValue &Value)
+void APlayerPawn::Restart(const FInputActionValue &value)
 {
     if ((Cast<AAlienSpawner>(UGameplayStatics::GetActorOfClass(GetWorld(), AAlienSpawner::StaticClass()))->GameWon || CurrentHealth <= 0) && !Restarting)
     {
@@ -151,14 +151,14 @@ void APlayerPawn::Restart(const FInputActionValue &Value)
 }
 
 
-void APlayerPawn::Move(const FInputActionValue &Value)
+void APlayerPawn::Move(const FInputActionValue &value)
 {
-    const FVector2D movementVector = Value.Get<FVector2D>();
+    const FVector2D movementVector = value.Get<FVector2D>();
 
     AddActorWorldOffset(GetActorRotation().RotateVector(FVector(-movementVector.X * Speed, movementVector.Y * Speed, 0.f)));
 }
 
-void APlayerPawn::Shoot(const FInputActionValue &Value)
+void APlayerPawn::Shoot(const FInputActionValue &value)
 {
     ReloadTimer = 0.f;
     if (Ammo == 0)

@@ -13,7 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/WeakObjectPtr.h"
 
-float AShot::explosionIntensity() const
+float AShot::ExplosionIntensity() const
 {
     float delta = Time - LifeTime;
     if (ExplosionDuration < 1.0f)
@@ -37,13 +37,13 @@ AShot::AShot()
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
-	const ConstructorHelpers::FObjectFinder<USoundWave> SoundWaveFinder(TEXT("SoundWave'/Game/MusicSFX/LaserShot.LaserShot'"));
+	const ConstructorHelpers::FObjectFinder<USoundWave> soundWaveFinder(TEXT("SoundWave'/Game/MusicSFX/LaserShot.LaserShot'"));
 
-	const ConstructorHelpers::FObjectFinder<UNiagaraSystem> ShotEffectFinder(TEXT("NiagaraSystem'/Game/Blueprints/ShotEffect.ShotEffect'"));
-	ShotEffect = ShotEffectFinder.Object;
+	const ConstructorHelpers::FObjectFinder<UNiagaraSystem> shotEffectFinder(TEXT("NiagaraSystem'/Game/Blueprints/ShotEffect.ShotEffect'"));
+	ShotEffect = shotEffectFinder.Object;
 
-    const ConstructorHelpers::FObjectFinder<UNiagaraSystem> ExplosionEffectFinder(TEXT("NiagaraSystem'/Game/Blueprints/ShotHitEffect.ShotHitEffect'"));
-    ExplosionEffect = ExplosionEffectFinder.Object;
+    const ConstructorHelpers::FObjectFinder<UNiagaraSystem> explosionEffectFinder(TEXT("NiagaraSystem'/Game/Blueprints/ShotHitEffect.ShotHitEffect'"));
+    ExplosionEffect = explosionEffectFinder.Object;
 
     Light2 = CreateDefaultSubobject<UPointLightComponent>(TEXT("ExplosionLight"));
     SetRootComponent(Light2);
@@ -66,7 +66,7 @@ AShot::AShot()
 	Light1->SetIntensity(20000.0f);
 
 	//Constructing sound
-	AlienDeathSound = SoundWaveFinder.Object;
+	AlienDeathSound = soundWaveFinder.Object;
 }
 
 // Called when the game starts or when spawned
@@ -81,17 +81,17 @@ void AShot::BeginPlay()
     CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
     CollisionComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
     CollisionComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
-    FScriptDelegate CollisionBeginOverlap;
-    CollisionBeginOverlap.BindUFunction(this, "OnOverlapBegin");
-    CollisionComponent->OnComponentBeginOverlap.Add(CollisionBeginOverlap);
+    FScriptDelegate collisionBeginOverlap;
+    collisionBeginOverlap.BindUFunction(this, "OnOverlapBegin");
+    CollisionComponent->OnComponentBeginOverlap.Add(collisionBeginOverlap);
     CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &AShot::OnOverlapBegin);
 }
 
 // Called every frame
-void AShot::Tick(float DeltaTime)
+void AShot::Tick(float delta_time)
 {
-    Super::Tick(DeltaTime);
-    Time += DeltaTime;
+    Super::Tick(delta_time);
+    Time += delta_time;
     if (Time >= LifeTime)
     {
         Light1->SetIntensity(0.0f);
@@ -102,7 +102,7 @@ void AShot::Tick(float DeltaTime)
             ExplosionEffectComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplosionEffect, GetActorLocation(), GetActorRotation());
             ExplosionEffectComponent->AttachToComponent(Light2, FAttachmentTransformRules::KeepRelativeTransform);
         }
-        Light2->SetIntensity(explosionIntensity());
+        Light2->SetIntensity(ExplosionIntensity());
     }
     else
     {
@@ -145,5 +145,5 @@ void AShot::Explode(AActor *other_actor)
     }
     other_actor->Destroy();
     Time = LifeTime;
-    Light2->SetIntensity(explosionIntensity());
+    Light2->SetIntensity(ExplosionIntensity());
 }

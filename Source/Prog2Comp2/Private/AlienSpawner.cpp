@@ -27,11 +27,11 @@ void AAlienSpawner::BeginPlay()
 }
 
 // Called every frame
-void AAlienSpawner::Tick(float DeltaTime)
+void AAlienSpawner::Tick(float delta_time)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(delta_time);
 
-	InternalTimer += DeltaTime;
+	InternalTimer += delta_time;
 
 	if (StopSpawning() && !GameWon)
 	{

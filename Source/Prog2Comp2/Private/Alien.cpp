@@ -13,8 +13,8 @@ AAlien::AAlien()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/Alien/AlienEnemy.AlienEnemy'"));
-	const ConstructorHelpers::FObjectFinder<UMaterial> MeshMaterialFinder(TEXT("Material'/Game/Models/Alien/MM_Alien.MM_Alien'"));
+	const ConstructorHelpers::FObjectFinder<UStaticMesh> meshFinder(TEXT("StaticMesh'/Game/Models/Alien/AlienEnemy.AlienEnemy'"));
+	const ConstructorHelpers::FObjectFinder<UMaterial> meshMaterialFinder(TEXT("Material'/Game/Models/Alien/MM_Alien.MM_Alien'"));
 
 	//Constructing the collider 
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
@@ -26,8 +26,8 @@ AAlien::AAlien()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMesh->SetupAttachment(GetRootComponent());
 	StaticMesh->SetRelativeLocation(FVector(0.f, 0.f, -50));
-	StaticMesh->SetStaticMesh(MeshFinder.Object);
-	StaticMesh->SetMaterial(0, MeshMaterialFinder.Object);
+	StaticMesh->SetStaticMesh(meshFinder.Object);
+	StaticMesh->SetMaterial(0, meshMaterialFinder.Object);
 
 	//Variables for the alien object
 	AlienMoveSpeed = 1;
@@ -42,9 +42,9 @@ void AAlien::BeginPlay()
 	RotationSpeed = FMath::RandRange(0.5f, 1.5f);
 }
 
-void AAlien::Tick(float DeltaTime)
+void AAlien::Tick(float delta_time)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(delta_time);
 
 	// Moving the alien
 	FVector newLocation = GetActorLocation();
@@ -57,7 +57,7 @@ void AAlien::Tick(float DeltaTime)
 			// normalize direction
 			direction.Normalize();
 			direction *= FVector(1.f, 1.f, 0.f);
-			const FVector offsetLocation = direction * AlienMoveSpeed * DeltaTime;
+			const FVector offsetLocation = direction * AlienMoveSpeed * delta_time;
 			newLocation += offsetLocation;
 		}
 		else
@@ -68,7 +68,7 @@ void AAlien::Tick(float DeltaTime)
 	else
 	{
 	defaultBehaviour:
-		newLocation += FVector(-1, 0, 0) * AlienMoveSpeed * DeltaTime;
+		newLocation += FVector(-1, 0, 0) * AlienMoveSpeed * delta_time;
 	}
 	SetActorLocation(newLocation);
 

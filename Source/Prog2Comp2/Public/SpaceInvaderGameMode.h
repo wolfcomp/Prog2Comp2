@@ -17,7 +17,7 @@ class PROG2COMP2_API ASpaceInvaderGameMode : public AGameMode
 	ASpaceInvaderGameMode();
 
 public:
-	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
+	virtual void HandleStartingNewPlayer_Implementation(APlayerController* newPlayer) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
 		class UInputMappingContext* InputMappingContext;
