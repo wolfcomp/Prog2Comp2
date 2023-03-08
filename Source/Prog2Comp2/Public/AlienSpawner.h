@@ -38,10 +38,11 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
 	    TSubclassOf<AAlien> BP_Alien;
 
+	bool GameWon;
+
 private:
 	float InternalTimer;
 
 
 	void StopSpawning();
-	bool GameWon;
 };

@@ -2,6 +2,9 @@
 
 
 #include "PlayerPawn.h"
+
+#include "Alien.h"
+#include "AlienSpawner.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PlayerHud.h"
@@ -86,6 +89,15 @@ void APlayerPawn::BeginPlay()
 // Called every frame
 void APlayerPawn::Tick(float DeltaTime)
 {
+	const bool isWon = Cast<AAlienSpawner>(UGameplayStatics::GetActorOfClass(GetWorld(), AAlienSpawner::StaticClass()))->GameWon;
+
+	TArray<AActor*> actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAlien::StaticClass(), actors);
+	if(actors.IsEmpty() && isWon)
+	{
+	    DisableInput(Cast<APlayerController>(GetController()));
+	}
+
 	if (ReloadTimer >= ReloadTime)
 	{
 		Ammo = 20;
