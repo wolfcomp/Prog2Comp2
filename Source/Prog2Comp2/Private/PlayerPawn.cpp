@@ -127,10 +127,10 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 
 void APlayerPawn::Shoot(const FInputActionValue& Value)
 {
+	ReloadTimer = 0.f;
 	if (Ammo == 0)
 		return;
 	Ammo--;
-	ReloadTimer = 0.f;
 	FVector location = GetActorLocation();
 	FRotator rotation = GetActorRotation();
 	const FVector offset = ShotOffsets[ShotIndex++ % 4];
