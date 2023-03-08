@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerPawn.h"
 #include "GameFramework/Actor.h"
 #include "AlienSpawner.generated.h"
 
@@ -44,5 +45,5 @@ private:
 	float InternalTimer;
 
 
-	void StopSpawning();
+    bool StopSpawning();
 };

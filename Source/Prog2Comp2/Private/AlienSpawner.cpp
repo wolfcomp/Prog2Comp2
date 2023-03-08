@@ -32,9 +32,8 @@ void AAlienSpawner::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	InternalTimer += DeltaTime;
-	StopSpawning();
 
-	if (!GameWon)
+	if (StopSpawning() && !GameWon)
 	{
 		FVector location = GetActorLocation();
 		location.Z = 130;
@@ -53,7 +52,7 @@ void AAlienSpawner::Tick(float DeltaTime)
 }
 
 
-void AAlienSpawner::StopSpawning()
+bool AAlienSpawner::StopSpawning()
 {
 	if (const APlayerController* pc = GetWorld()->GetFirstPlayerController())
 	{
@@ -68,6 +67,8 @@ void AAlienSpawner::StopSpawning()
             {
                 GameWon = false;
             }
+			return playerPawn->CurrentHealth > 0;
 		}
 	}
+	return false;
 }
