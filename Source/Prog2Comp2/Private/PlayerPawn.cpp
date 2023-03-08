@@ -92,13 +92,12 @@ void APlayerPawn::BeginPlay()
 void APlayerPawn::Tick(float DeltaTime)
 {
     const bool isWon = Cast<AAlienSpawner>(UGameplayStatics::GetActorOfClass(GetWorld(), AAlienSpawner::StaticClass()))->GameWon;
-
+    
     TArray<AActor *> actors;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAlien::StaticClass(), actors);
     if (actors.IsEmpty() && isWon && !Restarting && Score != 0)
     {
-        DisableInput(Cast<APlayerController>(GetController()));
-        EnableInput(Cast<APlayerController>(GetController()));
+        PlayerHudWidget->SetWinLoseField(FText::FromString("you win, pog, restart by pressing r or right menu button on controller"), ESlateVisibility::Visible);
     }
 
     if(Score == 0)
@@ -176,6 +175,7 @@ void APlayerPawn::Collide(AActor *other_actor)
     if (CurrentHealth <= 0)
     {
         this->Destroy();
+        PlayerHudWidget->SetWinLoseField(FText::FromString("you lose, press f to pay respect, restart by pressing r or right menu button on controller"), ESlateVisibility::Hidden);
         // show game over display
     }
 }

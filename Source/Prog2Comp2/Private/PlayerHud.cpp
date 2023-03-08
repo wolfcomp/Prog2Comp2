@@ -3,6 +3,7 @@
 
 #include "PlayerHud.h"
 #include "PlayerPawn.h"
+#include "Components/Image.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
@@ -26,6 +27,15 @@ void UPlayerHud::NativeConstruct()
 			HealthBar->PercentDelegate.BindUFunction(this, "SetHealthBar");
 			HealthBar->SynchronizeProperties();
 		}
+		if(WinLoseTextTxt)
+		{
+		    WinLoseTextTxt->TextDelegate.BindUFunction(this, "LocSetWinLoseField");
+			WinLoseTextTxt ->SynchronizeProperties();
+		}
+		if(WinImage)
+		{
+		    WinImage->SetVisibility(ESlateVisibility::Hidden);
+		}
 	} else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "MyPlayer not valid");
@@ -46,4 +56,15 @@ float UPlayerHud::SetHealthBar() const
 {
 	return MyPlayer->CurrentHealth / MyPlayer->MaxHealth;
 	//return 0.5;
+}
+
+FText UPlayerHud::LocSetWinLoseField() const
+{
+	return WinLoseText;
+}
+
+void UPlayerHud::SetWinLoseField(FText a, ESlateVisibility DisplayWinImage)
+{
+	WinLoseText = a;
+	WinImage->SetVisibility(DisplayWinImage);
 }

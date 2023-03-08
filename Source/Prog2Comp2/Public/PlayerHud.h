@@ -16,6 +16,7 @@ class PROG2COMP2_API UPlayerHud : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	FText WinLoseText = FText::FromString("");
 	virtual void NativeConstruct() override;
 	UFUNCTION()
 	FText SetAmmoField() const;
@@ -23,6 +24,10 @@ public:
 	FText SetScoreField() const;
 	UFUNCTION()
 	float SetHealthBar() const;
+	UFUNCTION()
+	FText LocSetWinLoseField() const;
+	UFUNCTION()
+	void SetWinLoseField(FText a, ESlateVisibility DisplayWinImage);
 	UPROPERTY(EditAnywhere)
 		APlayerPawn* MyPlayer = __nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -31,4 +36,8 @@ public:
 		class UTextBlock* AmmoNum = __nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		class UTextBlock* ScoreNum = __nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		class UTextBlock* WinLoseTextTxt = __nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		class UImage* WinImage = __nullptr;
 };
