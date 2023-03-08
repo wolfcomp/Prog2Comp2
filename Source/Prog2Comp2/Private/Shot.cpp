@@ -123,6 +123,7 @@ void AShot::Explode(AActor* other_actor)
 	if(!other_actor->Tags.FindByKey("Enemy"))
 		return;
 
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Hit"));
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotEffectComponent->Deactivate();
 	Light1->SetIntensity(0.0f);

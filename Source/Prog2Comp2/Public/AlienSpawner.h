@@ -8,17 +8,6 @@
 
 class AAlien;
 
-struct Wave
-{
-	Wave(int s, int d)
-	{
-		Size = s;
-		Difficulty = d;
-	}
-	int Size;
-	int Difficulty;
-};
-
 UCLASS()
 class PROG2COMP2_API AAlienSpawner : public AActor
 {
@@ -31,33 +20,28 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	AAlienSpawner();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		TArray<int> WaveSize;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
+		float SpawnDelay;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
+		int AlienSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		TArray<int> WaveDifficulty;
+		float XSpawnLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		TArray<int> WaveSpawnRate;
+		float YSpawnLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		float MinX;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		float MaxX;
+		int AlienKillsToWin;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		float MinY;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		float MaxY;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		int CurrentWave;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
+	    TSubclassOf<AAlien> BP_Alien;
 
 private:
-	int LeftToSpawn;
-	float Clock;
+	float InternalTimer;
 
-	void ChangeWave(int Wave);
+
+	void StopSpawning();
 	bool GameWon;
-
 };

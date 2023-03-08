@@ -43,7 +43,7 @@ public:
 	/** Public Variables */
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		float MovementSpeed;
+		float AlienMoveSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
 		float RotationSpeed;

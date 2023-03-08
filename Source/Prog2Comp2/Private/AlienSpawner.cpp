@@ -3,6 +3,7 @@
 
 #include "AlienSpawner.h"
 #include "Alien.h"
+#include "PlayerPawn.h"
 
 // Sets default values
 AAlienSpawner::AAlienSpawner()
@@ -10,24 +11,10 @@ AAlienSpawner::AAlienSpawner()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MinX = 2000;
-	MaxX = 2200;
+	XSpawnLocation = FMath::RandRange(0, 500);
+	YSpawnLocation = FMath::RandRange(0, 500);
 
-	MinY = -400;
-	MaxY = 400;
-
-	WaveSize.Add(10);
-	WaveSize.Add(15);
-	WaveSize.Add(20);
-
-	WaveDifficulty.Add(0.5);
-	WaveDifficulty.Add(1);
-	WaveDifficulty.Add(2);
-
-	WaveSpawnRate.Add(2);
-	WaveSpawnRate.Add(1);
-	WaveSpawnRate.Add(0.5);
-
+	SpawnDelay = 5.f;
 	GameWon = false;
 
 }
@@ -37,9 +24,6 @@ void AAlienSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurrentWave = 1;
-	LeftToSpawn = WaveSize[CurrentWave - 1];
-	
 }
 
 // Called every frame
@@ -47,35 +31,39 @@ void AAlienSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Clock += DeltaTime;
+	InternalTimer += DeltaTime;
+	StopSpawning();
 
-	if (Clock > WaveSpawnRate[CurrentWave - 1] && !GameWon)
+	if (!GameWon)
 	{
-		Clock = 0.f;
-		FVector location = FVector(FMath::RandRange(MinX, MaxX), FMath::RandRange(MinY, MaxY), 130);
+		FVector location = GetActorLocation();
+		location.Z = 130;
 
 		//Spawning
-		AAlien* Target = GetWorld()->SpawnActor<AAlien>(AAlien::StaticClass(), location, FRotator::ZeroRotator);
-		Target->MovementSpeed *= WaveDifficulty[CurrentWave - 1];
-		LeftToSpawn--;
-		if (LeftToSpawn <= 0)
+		if (InternalTimer > SpawnDelay)
 		{
-			ChangeWave(CurrentWave + 1);
+			if(AAlien* Target = GetWorld()->SpawnActor<AAlien>(AAlien::StaticClass(), location, FRotator::ZeroRotator))
+			{
+			    Target->AlienMoveSpeed = AlienSpeed + FMath::RandRange(0, 100);
+			}
+			InternalTimer = 0.f;
 		}
 	}
-
+	
 }
 
-void AAlienSpawner::ChangeWave(int Wave)
+
+void AAlienSpawner::StopSpawning()
 {
-	if (WaveSize.Num() < Wave)
+	if (const APlayerController* pc = GetWorld()->GetFirstPlayerController())
 	{
-		//Game Won
-		GameWon = true;
-		return;
+		if (const APawn* pcPawn = pc->GetPawn())
+		{
+			const APlayerPawn* playerPawn = Cast<APlayerPawn>(pcPawn);
+			if (playerPawn->Score > AlienKillsToWin)
+			{
+				GameWon = true;
+			}
+		}
 	}
-
-	CurrentWave = Wave;
-	LeftToSpawn = WaveSize[CurrentWave - 1];
 }
-

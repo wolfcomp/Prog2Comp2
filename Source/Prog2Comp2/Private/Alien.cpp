@@ -15,21 +15,23 @@ AAlien::AAlien()
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/Alien/AlienEnemy.AlienEnemy'"));
 	const ConstructorHelpers::FObjectFinder<UMaterial> MeshMaterialFinder(TEXT("Material'/Game/Models/Alien/MM_Alien.MM_Alien'"));
 
+	//Constructing the collider 
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	SetRootComponent(Collider);
 	Collider->InitBoxExtent(FVector(10, 50, 50));
 	Collider->SetRelativeScale3D(FVector(2,2,2));
 
+	//Constructing the object mesh
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMesh->SetupAttachment(GetRootComponent());
 	StaticMesh->SetRelativeLocation(FVector(0.f, 0.f, -50));
 	StaticMesh->SetStaticMesh(MeshFinder.Object);
 	StaticMesh->SetMaterial(0, MeshMaterialFinder.Object);
 
-	MovementSpeed = 350;
+	//Variables for the alien object
+	AlienMoveSpeed = 1;
 	RotationSpeed = 1.f;
 	XKillPosition = -200.f;
-
 	Tags.Add(FName("Enemy"));
 }
 
@@ -37,14 +39,13 @@ void AAlien::BeginPlay()
 {
 	Super::BeginPlay();
 	RotationSpeed = FMath::RandRange(0.5f, 1.5f);
-	MovementSpeed += FMath::RandRange(0, 250);
 }
 
 void AAlien::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Move
+	// Moving the alien
 	FVector newLocation = GetActorLocation();
 	if (const APlayerController* pc = GetWorld()->GetFirstPlayerController())
 	{
@@ -55,18 +56,18 @@ void AAlien::Tick(float DeltaTime)
 			// normalize direction
 			direction.Normalize();
 			direction *= FVector(1.f, 1.f, 0.f);
-			const FVector offsetLocation = direction * MovementSpeed * DeltaTime;
+			const FVector offsetLocation = direction * AlienMoveSpeed * DeltaTime;
 			newLocation += offsetLocation;
 		}
 		else
 		{
-			goto oldCalc;
+			goto defaultBehaviour;
 		}
 	}
 	else
 	{
-	oldCalc:
-		newLocation += FVector(-1, 0, 0) * MovementSpeed * DeltaTime;
+	defaultBehaviour:
+		newLocation += FVector(-1, 0, 0) * AlienMoveSpeed * DeltaTime;
 	}
 	SetActorLocation(newLocation);
 
