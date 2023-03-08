@@ -51,7 +51,7 @@ public:
 		float Speed = 50.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-		float LookSpeed = 4.0f;
+		float LookSpeed = 2.0f;
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Mesh;
@@ -77,9 +77,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Ammo = 20;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float CurrentHealth = 50.f;
+		float CurrentHealth = 5.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float MaxHealth = 100.f;
+		float MaxHealth = 5.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Score = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

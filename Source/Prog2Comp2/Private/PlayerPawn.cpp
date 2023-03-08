@@ -11,6 +11,7 @@
 #include "Components/RectLightComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/RectLightComponent.h"
 
 // Sets default values
@@ -44,8 +45,8 @@ APlayerPawn::APlayerPawn()
 
 	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("RectLight"));
     RectLight->SetupAttachment(Mesh);
-    RectLight->SetRelativeLocation(FVector(0.f, -90.f, 250.f));
-    RectLight->SetRelativeRotation(FRotator(90.f, 0.f, 0.f));
+    RectLight->SetRelativeLocation(FVector(0.f, 90.f, 250.f));
+    RectLight->SetRelativeRotation(FRotator(-90.f, 0.f, 0.f));
 	RectLight->SetSourceHeight(400);
     RectLight->SetSourceWidth(300);
 	RectLight->SetIntensity(10000);
@@ -143,7 +144,7 @@ void APlayerPawn::Shoot(const FInputActionValue& Value)
 void APlayerPawn::Collide(AActor* other_actor)
 {
 	if (other_actor->Tags.FindByKey("Enemy"))
-		CurrentHealth -= 10;
+		CurrentHealth--;
 
 	if (CurrentHealth <= 0)
 	{
