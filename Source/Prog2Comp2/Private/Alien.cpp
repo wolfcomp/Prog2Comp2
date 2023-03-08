@@ -12,17 +12,19 @@ AAlien::AAlien()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/SpaceShip/SpaceShip.SpaceShip'"));
-	const ConstructorHelpers::FObjectFinder<UMaterial> MeshMaterialFinder(TEXT("Material'/Game/Models/SpaceShip/MM_SpaceShip.MM_SpaceShip'"));
+	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/Alien/AlienEnemy.AlienEnemy'"));
+	const ConstructorHelpers::FObjectFinder<UMaterial> MeshMaterialFinder(TEXT("Material'/Game/Models/Alien/MM_Alien.MM_Alien'"));
 
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	SetRootComponent(Collider);
 	Collider->InitBoxExtent(FVector(10, 50, 50));
+	Collider->SetRelativeScale3D(FVector(2,2,2));
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMesh->SetupAttachment(GetRootComponent());
-	StaticMesh->SetRelativeScale3D(FVector(0.1f, 1.f, 1.f));
 	StaticMesh->SetRelativeLocation(FVector(0.f, 0.f, -50));
+	StaticMesh->SetStaticMesh(MeshFinder.Object);
+	StaticMesh->SetMaterial(0, MeshMaterialFinder.Object);
 
 	MovementSpeed = 350;
 	RotationSpeed = 1.f;
@@ -54,6 +56,7 @@ void AAlien::Tick(float DeltaTime)
 			direction.Normalize();
 			direction *= FVector(1.f, 1.f, 0.f);
 			newLocation += direction * MovementSpeed * DeltaTime;
+			GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Red, FString::Printf(TEXT("newLocation: %s"), *newLocation.ToString()));
 		}
 		else
 		{

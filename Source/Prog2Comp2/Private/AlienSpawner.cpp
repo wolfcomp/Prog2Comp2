@@ -55,8 +55,7 @@ void AAlienSpawner::Tick(float DeltaTime)
 		FVector location = FVector(FMath::RandRange(MinX, MaxX), FMath::RandRange(MinY, MaxY), 80);
 
 		//Spawning
-		AActor* Actor = GetWorld()->SpawnActor<AActor>(BP_Alien, location, FRotator::ZeroRotator);
-		AAlien* Target = Cast<AAlien>(Actor);
+		AAlien* Target = GetWorld()->SpawnActor<AAlien>(AAlien::StaticClass(), location, FRotator::ZeroRotator);
 		Target->MovementSpeed *= WaveDifficulty[CurrentWave - 1];
 		LeftToSpawn--;
 		if (LeftToSpawn <= 0)

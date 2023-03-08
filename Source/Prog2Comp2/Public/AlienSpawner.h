@@ -53,9 +53,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
 		int CurrentWave;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Variables")
-		TSubclassOf<AAlien> BP_Alien;
-
 private:
 	int LeftToSpawn;
 	float Clock;

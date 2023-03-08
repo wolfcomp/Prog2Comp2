@@ -114,7 +114,6 @@ void AShot::Tick(float DeltaTime)
 void AShot::OnOverlapBegin(UPrimitiveComponent* overlapped_component, AActor* other_actor,
 	UPrimitiveComponent* other_comp, int32 other_body_index, bool b_from_sweep, const FHitResult& sweep_result)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Shot hit something"));
 	this->Explode(other_actor);
 }
 
@@ -122,8 +121,6 @@ void AShot::Explode(AActor* other_actor)
 {
 	if(!other_actor->Tags.FindByKey("Enemy"))
 		return;
-	//print other actor name to screen
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, other_actor->GetName());
 
 	CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	ShotEffectComponent->Deactivate();
