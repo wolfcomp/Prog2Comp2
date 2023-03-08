@@ -17,12 +17,12 @@ APlayerPawn::APlayerPawn()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(TEXT("StaticMesh'/Game/Models/SpaceShip/SpaceShip.SpaceShip'"));
-	const ConstructorHelpers::FObjectFinder<UMaterial> MeshMaterialFinder(TEXT("Material'/Game/Models/SpaceShip/MM_SpaceShip.MM_SpaceShip'"));
+	const ConstructorHelpers::FObjectFinder<UStaticMesh> meshFinder(TEXT("StaticMesh'/Game/Models/SpaceShip/SpaceShip.SpaceShip'"));
+	const ConstructorHelpers::FObjectFinder<UMaterial> meshMaterialFinder(TEXT("Material'/Game/Models/SpaceShip/MM_SpaceShip.MM_SpaceShip'"));
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Root"));
 	SetRootComponent(Mesh);
-	Mesh->SetStaticMesh(MeshFinder.Object);
-	Mesh->SetMaterial(0, MeshMaterialFinder.Object);
+	Mesh->SetStaticMesh(meshFinder.Object);
+	Mesh->SetMaterial(0, meshMaterialFinder.Object);
 	Mesh->SetCollisionProfileName(TEXT("Custom"));
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Mesh->SetCollisionObjectType(ECC_Pawn);
@@ -40,17 +40,17 @@ APlayerPawn::APlayerPawn()
 	Camera->bUsePawnControlRotation = false;
 	Camera->SetupAttachment(SpringArm);
 
-	const ConstructorHelpers::FObjectFinder<UInputAction> MoveActionFinder(TEXT("InputAction'/Game/Input/Move.Move'"));
-	MoveAction = MoveActionFinder.Object;
+	const ConstructorHelpers::FObjectFinder<UInputAction> moveActionFinder(TEXT("InputAction'/Game/Input/Move.Move'"));
+	MoveAction = moveActionFinder.Object;
 
-	const ConstructorHelpers::FObjectFinder<UInputAction> LookActionFinder(TEXT("InputAction'/Game/Input/Look.Look'"));
-	LookAction = LookActionFinder.Object;
+	const ConstructorHelpers::FObjectFinder<UInputAction> lookActionFinder(TEXT("InputAction'/Game/Input/Look.Look'"));
+	LookAction = lookActionFinder.Object;
 
-	const ConstructorHelpers::FObjectFinder<UInputAction> ShootActionFinder(TEXT("InputAction'/Game/Input/Shoot.Shoot'"));
-	ShootAction = ShootActionFinder.Object;
+	const ConstructorHelpers::FObjectFinder<UInputAction> shootActionFinder(TEXT("InputAction'/Game/Input/Shoot.Shoot'"));
+	ShootAction = shootActionFinder.Object;
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ShotFinder(TEXT("Blueprint'/Game/Blueprints/BP_Shot.BP_Shot'"));
-	ShotClass = ShotFinder.Object->GeneratedClass;
+	static ConstructorHelpers::FObjectFinder<UBlueprint> shotFinder(TEXT("Blueprint'/Game/Blueprints/BP_Shot.BP_Shot'"));
+	ShotClass = shotFinder.Object->GeneratedClass;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -138,4 +138,9 @@ void APlayerPawn::Collide(AActor* other_actor)
 		this->Destroy();
 		//show game over display
 	}
+}
+
+void APlayerPawn::AddScore()
+{
+	Score++;
 }

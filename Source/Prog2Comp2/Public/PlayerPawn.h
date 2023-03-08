@@ -36,6 +36,8 @@ public:
 	void Shoot(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
+	void AddScore();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> PlayerHudTemplate = __nullptr;

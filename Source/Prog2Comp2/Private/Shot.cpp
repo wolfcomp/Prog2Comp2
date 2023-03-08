@@ -9,6 +9,7 @@
 #include "Components/PointLightComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
+#include "PlayerPawn.h"
 #include "UObject/WeakObjectPtr.h"
 
 float AShot::explosionIntensity() const
@@ -132,6 +133,13 @@ void AShot::Explode(AActor* other_actor)
 		ExplosionEffectComponent->AttachToComponent(Light2, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 	other_actor->Destroy();
+	if(const APlayerController* pc = GetWorld()->GetFirstPlayerController())
+	{
+		if (APlayerPawn* player = Cast<APlayerPawn>(pc->GetPawn()))
+		{
+			player->AddScore();
+		}
+	}
 	Time = LifeTime;
 	Light2->SetIntensity(explosionIntensity());
 }
