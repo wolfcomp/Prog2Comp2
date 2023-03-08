@@ -8,9 +8,10 @@
 #include "Shot.h"
 #include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
+#include "Components/RectLightComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
-#include "Kismet/GameplayStatics.h"
+#include "Components/RectLightComponent.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -40,6 +41,14 @@ APlayerPawn::APlayerPawn()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->bUsePawnControlRotation = false;
 	Camera->SetupAttachment(SpringArm);
+
+	RectLight = CreateDefaultSubobject<URectLightComponent>(TEXT("RectLight"));
+    RectLight->SetupAttachment(Mesh);
+    RectLight->SetRelativeLocation(FVector(0.f, -90.f, 250.f));
+    RectLight->SetRelativeRotation(FRotator(90.f, 0.f, 0.f));
+	RectLight->SetSourceHeight(400);
+    RectLight->SetSourceWidth(300);
+	RectLight->SetIntensity(10000);
 
 	const ConstructorHelpers::FObjectFinder<UInputAction> moveActionFinder(TEXT("InputAction'/Game/Input/Move.Move'"));
 	MoveAction = moveActionFinder.Object;

@@ -71,6 +71,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		class UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere)
+        class URectLightComponent *RectLight;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Ammo = 20;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
