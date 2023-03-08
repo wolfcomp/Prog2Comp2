@@ -97,7 +97,7 @@ void APlayerPawn::Tick(float DeltaTime)
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAlien::StaticClass(), actors);
     if (actors.IsEmpty() && isWon && !Restarting && Score != 0)
     {
-        PlayerHudWidget->SetWinLoseField(FText::FromString("you win, pog, restart by pressing p or right menu button on controller"), ESlateVisibility::Visible);
+        PlayerHudWidget->SetWinLoseField(FText::FromString("you win, pog, restart by pressing p or right menu button on controller"), ESlateVisibility::Visible, ESlateVisibility::Visible);
     }
 
     if (Score == 0)
@@ -146,7 +146,7 @@ void APlayerPawn::Restart(const FInputActionValue &Value)
         SetActorHiddenInGame(false);
         SetActorEnableCollision(true);
         SetActorTickEnabled(true);
-        PlayerHudWidget->SetWinLoseField(FText::FromString(""), ESlateVisibility::Hidden);
+        PlayerHudWidget->SetWinLoseField(FText::FromString(""), ESlateVisibility::Hidden, ESlateVisibility::Hidden);
     }
 }
 
@@ -180,7 +180,7 @@ void APlayerPawn::Collide(AActor *other_actor)
 
     if (CurrentHealth <= 0)
     {
-        PlayerHudWidget->SetWinLoseField(FText::FromString("you lose, press f to pay respect, restart by pressing p or right menu button on controller"), ESlateVisibility::Hidden);
+        PlayerHudWidget->SetWinLoseField(FText::FromString("you lose, press f to pay respect, restart by pressing p or right menu button on controller"), ESlateVisibility::Hidden, ESlateVisibility::Visible);
         
         SetActorHiddenInGame(true);
         SetActorEnableCollision(false);

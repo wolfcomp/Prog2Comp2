@@ -63,8 +63,9 @@ FText UPlayerHud::LocSetWinLoseField() const
 	return WinLoseText;
 }
 
-void UPlayerHud::SetWinLoseField(FText a, ESlateVisibility DisplayWinImage)
+void UPlayerHud::SetWinLoseField(FText text, ESlateVisibility displayWinImage, ESlateVisibility displayText)
 {
-	WinLoseText = a;
-	WinImage->SetVisibility(DisplayWinImage);
+	WinLoseText = text;
+	WinImage->SetVisibility(displayWinImage);
+	WinLoseTextTxt->SetVisibility(displayText);
 }
