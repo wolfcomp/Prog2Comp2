@@ -65,13 +65,17 @@ public:
 		class UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int Ammo = 10;
+		int Ammo = 20;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float CurrentHealth = 50.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MaxHealth = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Score = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ReloadTime = 1.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ReloadTimer = 1.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<class AShot> ShotClass;

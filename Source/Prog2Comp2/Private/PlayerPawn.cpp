@@ -75,6 +75,14 @@ void APlayerPawn::BeginPlay()
 // Called every frame
 void APlayerPawn::Tick(float DeltaTime)
 {
+	if (ReloadTimer >= ReloadTime)
+	{
+		Ammo = 20;
+	}
+	else
+	{
+		ReloadTimer += DeltaTime;
+	}
 	Super::Tick(DeltaTime);
 }
 
@@ -101,19 +109,23 @@ void APlayerPawn::Look(const FInputActionValue& Value)
 
 void APlayerPawn::Move(const FInputActionValue& Value)
 {
-	const FVector2D MovementVector = Value.Get<FVector2D>();
+	const FVector2D movementVector = Value.Get<FVector2D>();
 
-	AddActorWorldOffset(GetActorRotation().RotateVector(FVector(-MovementVector.X * Speed, MovementVector.Y * Speed, 0.f)));
+	AddActorWorldOffset(GetActorRotation().RotateVector(FVector(-movementVector.X * Speed, movementVector.Y * Speed, 0.f)));
 }
 
 void APlayerPawn::Shoot(const FInputActionValue& Value)
 {
-	FVector Location = GetActorLocation();
-	FRotator Rotation = GetActorRotation();
-	const FVector Offset = ShotOffsets[ShotIndex++ % 4];
-	Location = Location + Rotation.RotateVector(Offset);
-	Rotation = Rotation + FRotator(0, -90, 0);
-	GetWorld()->SpawnActor(ShotClass, &Location, &Rotation, FActorSpawnParameters());
+	if (Ammo == 0)
+		return;
+	Ammo--;
+	ReloadTimer = 0.f;
+	FVector location = GetActorLocation();
+	FRotator rotation = GetActorRotation();
+	const FVector offset = ShotOffsets[ShotIndex++ % 4];
+	location = location + rotation.RotateVector(offset);
+	rotation = rotation + FRotator(0, -90, 0);
+	GetWorld()->SpawnActor(ShotClass, &location, &rotation, FActorSpawnParameters());
 }
 
 void APlayerPawn::Collide(AActor* other_actor)
@@ -121,7 +133,7 @@ void APlayerPawn::Collide(AActor* other_actor)
 	if (other_actor->Tags.FindByKey("Enemy"))
 		CurrentHealth -= 10;
 
-	if(CurrentHealth <= 0)
+	if (CurrentHealth <= 0)
 	{
 		this->Destroy();
 		//show game over display
