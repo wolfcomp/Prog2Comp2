@@ -39,6 +39,8 @@ public:
 	void Shoot(const FInputActionValue& Value);
 
 	void Look(const FInputActionValue& Value);
+
+	void Restart(const FInputActionValue& Value);
 	void AddScore();
 
 	void PlayShootSound();
@@ -64,6 +66,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
 		UInputAction* ShootAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = InputSystem)
+		UInputAction* RestartAction;
 
 	UPROPERTY(EditAnywhere)
 		class USpringArmComponent* SpringArm;
@@ -95,6 +100,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ShotIndex = 0;
+
+	UPROPERTY(EditAnywhere, blueprintReadWrite)
+        bool Restarting = false;
 
 	UFUNCTION(BlueprintCallable)
 	    void Collide(AActor* other_actor);

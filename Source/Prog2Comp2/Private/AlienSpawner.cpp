@@ -64,6 +64,10 @@ void AAlienSpawner::StopSpawning()
 			{
 				GameWon = true;
 			}
+            else
+            {
+                GameWon = false;
+            }
 		}
 	}
 }
