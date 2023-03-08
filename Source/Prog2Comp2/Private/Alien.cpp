@@ -55,8 +55,8 @@ void AAlien::Tick(float DeltaTime)
 			// normalize direction
 			direction.Normalize();
 			direction *= FVector(1.f, 1.f, 0.f);
-			newLocation += direction * MovementSpeed * DeltaTime;
-			GEngine->AddOnScreenDebugMessage(-1, 0.1f, FColor::Red, FString::Printf(TEXT("newLocation: %s"), *newLocation.ToString()));
+			const FVector offsetLocation = direction * MovementSpeed * DeltaTime;
+			newLocation += offsetLocation;
 		}
 		else
 		{

@@ -52,7 +52,7 @@ void AAlienSpawner::Tick(float DeltaTime)
 	if (Clock > WaveSpawnRate[CurrentWave - 1] && !GameWon)
 	{
 		Clock = 0.f;
-		FVector location = FVector(FMath::RandRange(MinX, MaxX), FMath::RandRange(MinY, MaxY), 80);
+		FVector location = FVector(FMath::RandRange(MinX, MaxX), FMath::RandRange(MinY, MaxY), 130);
 
 		//Spawning
 		AAlien* Target = GetWorld()->SpawnActor<AAlien>(AAlien::StaticClass(), location, FRotator::ZeroRotator);
