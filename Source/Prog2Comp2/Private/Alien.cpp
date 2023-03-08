@@ -46,15 +46,23 @@ void AAlien::Tick(float DeltaTime)
 	FVector newLocation = GetActorLocation();
 	if (const APlayerController* pc = GetWorld()->GetFirstPlayerController())
 	{
-		const FVector pcLocation = pc->GetPawn()->GetActorLocation();
-		FVector direction = pcLocation - newLocation;
-		// normalize direction
-		direction.Normalize();
-		direction *= FVector(1.f, 1.f, 0.f);
-		newLocation += direction * MovementSpeed * DeltaTime;
+		if (const APawn* pcPawn = pc->GetPawn())
+		{
+			const FVector pcLocation = pcPawn->GetActorLocation();
+			FVector direction = pcLocation - newLocation;
+			// normalize direction
+			direction.Normalize();
+			direction *= FVector(1.f, 1.f, 0.f);
+			newLocation += direction * MovementSpeed * DeltaTime;
+		}
+		else
+		{
+			goto oldCalc;
+		}
 	}
 	else
 	{
+	oldCalc:
 		newLocation += FVector(-1, 0, 0) * MovementSpeed * DeltaTime;
 	}
 	SetActorLocation(newLocation);
