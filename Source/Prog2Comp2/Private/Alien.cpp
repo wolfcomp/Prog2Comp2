@@ -47,6 +47,7 @@ void AAlien::Tick(float DeltaTime)
 		FVector direction = pcLocation - newLocation;
 		// normalize direction
 		direction.Normalize();
+		direction *= FVector(1.f, 1.f, 0.f);
 		newLocation += direction * MovementSpeed * DeltaTime;
 	}
 	else
